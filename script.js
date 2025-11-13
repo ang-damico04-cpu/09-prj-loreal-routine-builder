@@ -407,6 +407,10 @@ chatForm.addEventListener("submit", async (e) => {
     // Get API key from secrets.js
     const apiKey = window.OPENAI_API_KEY;
 
+    if (!apiKey) {
+      throw new Error("API key not found. Please check your secrets.js file.");
+    }
+
     // Make request to OpenAI API using fetch, sending the full messages array
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
@@ -506,6 +510,12 @@ if (generateRoutineBtn) {
     try {
       // Get API key from secrets.js
       const apiKey = window.OPENAI_API_KEY;
+
+      if (!apiKey) {
+        throw new Error(
+          "API key not found. Please check your secrets.js file."
+        );
+      }
 
       // Make request to OpenAI API using fetch with the full messages[]
       const response = await fetch(

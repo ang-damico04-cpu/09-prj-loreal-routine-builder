@@ -46,9 +46,20 @@
       <div class="selected-products">
         <h2>Selected Products</h2>
         <div id="selectedProductsList"></div>
-        <button id="generateRoutine" class="generate-btn">
-          <i class="fa-solid fa-wand-magic-sparkles"></i> Generate Routine
-        </button>
+        <div class="selected-actions">
+          <button id="generateRoutine" class="generate-btn">
+            <i class="fa-solid fa-wand-magic-sparkles"></i> Generate Routine
+          </button>
+          <!-- Clear all saved selections -->
+          <button
+            id="clearSelections"
+            class="clear-btn"
+            type="button"
+            title="Clear all selections"
+          >
+            <i class="fa-solid fa-trash"></i> Clear All
+          </button>
+        </div>
       </div>
 
       <!------- Chat Area ------->
@@ -83,6 +94,38 @@
           <a href="#">Contact</a>
         </nav>
       </footer>
+    </div>
+
+    <!-- Modal: product details (hidden by default) -->
+    <div
+      id="productModal"
+      class="product-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-hidden="true"
+    >
+      <div class="product-modal__overlay" data-modal-close></div>
+      <div class="product-modal__content" role="document">
+        <button
+          class="product-modal__close"
+          aria-label="Close product details"
+          data-modal-close
+        >
+          &times;
+        </button>
+        <img id="modalImage" src="" alt="" class="product-modal__image" />
+        <div class="product-modal__body">
+          <h3 id="modalTitle"></h3>
+          <p
+            id="modalBrand"
+            style="color: #666; font-size: 14px; margin-top: 4px"
+          ></p>
+          <p
+            id="modalDescription"
+            style="margin-top: 12px; line-height: 1.4"
+          ></p>
+        </div>
+      </div>
     </div>
 
     <!-- secrets.js can be removed when using Cloudflare Workers for API requests -->

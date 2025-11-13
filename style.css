@@ -113,7 +113,7 @@ body {
 
 .chat-form button {
   font-size: 18px;
-  background: #000;
+  background: #e3a535;
   color: #fff;
   border: none;
   padding: 12px;
@@ -127,12 +127,25 @@ body {
 }
 
 .chat-form button:hover {
-  background: #666666;
+  background: #a97c27;
 }
 
 .chat-form button:focus {
   outline: 2px solid #000;
   outline-offset: 2px;
+}
+
+/* added: import Lexend for input text */
+@import url("https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap");
+
+/* added: apply Lexend to all input-like elements */
+input,
+select,
+textarea,
+button,
+.chat-form input,
+.search-section select {
+  font-family: "Lexend", "Montserrat", Arial, Helvetica, sans-serif;
 }
 
 /* visually hidden */
@@ -167,7 +180,7 @@ body {
 }
 
 .site-footer a:hover {
-  color: #666666;
+  color: #666;
 }
 
 /* products grid */
@@ -186,6 +199,52 @@ body {
   display: flex;
   gap: 15px;
   min-height: 160px;
+
+  /* added: make hover/focus transitions smooth */
+  transition: transform 180ms ease, box-shadow 180ms ease,
+    border-color 180ms ease;
+
+  /* added: indicate the card is interactive */
+  cursor: pointer;
+}
+
+/* added: selected state for product cards */
+.product-card.selected {
+  background: linear-gradient(180deg, #fffaf0 0%, #fffdf7 100%);
+  border-color: #b88a2f;
+  box-shadow: 0 12px 30px rgba(184, 138, 47, 0.09);
+  transform: translateY(-6px);
+}
+
+/* small selected badge in the top-right of the card */
+.product-card .selected-badge {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  background: #b88a2f;
+  color: #fff;
+  font-size: 12px;
+  padding: 4px 6px;
+  border-radius: 999px;
+}
+
+/* ensure the product card container allows absolute-positioned badge */
+.product-card {
+  position: relative;
+}
+
+/* added: hover and keyboard-focus effect for product cards */
+.product-card:hover,
+.product-card:focus-within {
+  transform: translateY(-6px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  border-color: #b88a2f; /* subtle accent color on hover */
+}
+
+/* added: visible focus outline for keyboard users */
+.product-card:focus-within {
+  outline: 2px solid rgba(184, 138, 47, 0.15);
+  outline-offset: 4px;
 }
 
 .product-card img {
@@ -213,6 +272,95 @@ body {
   color: #666;
 }
 
+/* small "Details" button on product cards */
+.product-card .detail-btn {
+  margin-top: 8px;
+  align-self: flex-start;
+  background: transparent;
+  border: 1px solid #b88a2f;
+  color: #6b4f1b;
+  padding: 6px 8px;
+  font-size: 13px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.product-card .detail-btn:hover {
+  background: #b88a2f;
+  color: #fff;
+}
+
+/* Modal styles */
+.product-modal {
+  display: none; /* hidden by default */
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+}
+
+.product-modal[aria-hidden="false"] {
+  display: block;
+}
+
+/* backdrop */
+.product-modal__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(2px);
+}
+
+/* content box */
+.product-modal__content {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 92%;
+  max-width: 640px;
+  background: #fff;
+  border-radius: 10px;
+  padding: 18px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+/* close button */
+.product-modal__close {
+  position: absolute;
+  right: 12px;
+  top: 8px;
+  background: transparent;
+  border: none;
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+  color: #333;
+}
+
+/* image in modal */
+.product-modal__image {
+  width: 140px;
+  height: 140px;
+  object-fit: contain;
+  flex-shrink: 0;
+  border-radius: 6px;
+  background: #fafafa;
+}
+
+/* body text */
+.product-modal__body {
+  flex: 1;
+}
+
+/* ensure keyboard focus outline is visible */
+.product-modal__close:focus,
+.product-card .detail-btn:focus {
+  outline: 3px solid rgba(184, 138, 47, 0.18);
+  outline-offset: 2px;
+}
+
 /* selected products */
 .selected-products {
   margin: 40px 0;
@@ -232,6 +380,62 @@ body {
   gap: 10px;
 }
 
+#selectedProductsList .selected-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border: 1px solid #e6dfc8;
+  background: #fffdf7;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+/* remove button inside selected items */
+#selectedProductsList .remove-btn {
+  margin-left: auto;
+  background: transparent;
+  border: 1px solid #d0b77a;
+  color: #6b4f1b;
+  padding: 4px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+#selectedProductsList .remove-btn:hover {
+  background: #d0b77a;
+  color: #fff;
+}
+
+/* Clear All button: match remove button colors and hover */
+.selected-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px; /* spacing between the generate button and the clear button */
+}
+
+.selected-actions .clear-btn {
+  background: transparent;
+  border: 1px solid #d0b77a;
+  color: #6b4f1b;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: 0; /* remove inline left margin so it can be centered */
+  margin-top: 24px; /* increase space above the clear button */
+}
+
+.selected-actions .clear-btn:hover {
+  background: #d0b77a;
+  color: #fff;
+}
+
 .generate-btn {
   width: 100%;
   margin-top: 20px;
@@ -239,7 +443,7 @@ body {
   font-size: 18px;
   font-weight: 500;
   color: #fff;
-  background: #000;
+  background: #e3a535;
   border: none;
   border-radius: 8px;
   cursor: pointer;
@@ -247,9 +451,44 @@ body {
 }
 
 .generate-btn:hover {
-  background: #666;
+  background: #a97c27;
 }
 
 .generate-btn i {
   margin-right: 8px;
+}
+
+/* Chat message styles */
+.message {
+  margin-bottom: 15px;
+  padding: 12px;
+  border-radius: 8px;
+  line-height: 1.6;
+}
+
+.user-message {
+  background: #f5f5f5;
+  border-left: 4px solid #c4c4c4;
+}
+
+.bot-message {
+  background: #f5f5f5;
+  border-left: 4px solid #c9a961;
+}
+
+.bot-message.loading {
+  font-style: italic;
+  color: #666;
+}
+
+.bot-message.error {
+  background: #ffebee;
+  border-left: 4px solid #f44336;
+  color: #c62828;
+}
+
+.message strong {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
 }
